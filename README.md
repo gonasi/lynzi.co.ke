@@ -3,7 +3,7 @@
 A static site (HTML, CSS and a little JavaScript) with no build step, no CMS and no database.
 
 ```
-docs/                 ← the website. Deploy this folder, and only this folder.
+site/                 ← the website. Deploy this folder, and only this folder.
   index.html          Home
   about.html          About Us
   solutions.html      Solutions   (#sourcing #export #manufacturing #finance)
@@ -14,27 +14,26 @@ docs/                 ← the website. Deploy this folder, and only this folder.
   assets/js/main.js
   assets/img/         logo mark, favicons, social-share image
   _headers            Cloudflare Pages security and caching headers
-  .nojekyll           tells GitHub Pages to serve the files as they are
   robots.txt, sitemap.xml
 ```
 
 ## Preview locally
 
 ```bash
-python3 -m http.server 8787 --directory docs
+python3 -m http.server 8787 --directory site
 ```
 
 Then open http://localhost:8787.
 
 ## Preview on GitHub Pages
 
-GitHub Pages serves the `docs` folder on `main`, and every push to `main` republishes it automatically. The preview is at https://gonasi.github.io/lynzi.co.ke/ and is useful for review before the real domain goes live. The folder is called `docs` because that's the only folder name GitHub Pages can serve from without a deploy workflow.
+Every push to `main` runs `.github/workflows/pages.yml`, which publishes the `site` folder to GitHub Pages. The preview is at https://gonasi.github.io/lynzi.co.ke/ and is useful for review before the real domain goes live. Progress and any errors show under the repo's Actions tab.
 
 ## Deploy to Cloudflare Pages (free)
 
-**Option A: Direct Upload (no Git).** In the Cloudflare dashboard, go to Workers & Pages → Create → Pages → Upload assets. Name the project (for example `lynzi`) and drag in the **`docs` folder**. To update the site later, upload the folder again as a new deployment.
+**Option A: Direct Upload (no Git).** In the Cloudflare dashboard, go to Workers & Pages → Create → Pages → Upload assets. Name the project (for example `lynzi`) and drag in the **`site` folder**. To update the site later, upload the folder again as a new deployment.
 
-**Option B: Git.** Push this repo to GitHub and connect it in Pages. Leave the build command empty and set the build output directory to `docs`. Each push then deploys automatically.
+**Option B: Git.** Push this repo to GitHub and connect it in Pages. Leave the build command empty and set the build output directory to `site`. Each push then deploys automatically.
 
 **Domain.** In the Pages project, open Custom domains and add both `lynzi.co.ke` and `www.lynzi.co.ke`. Cloudflare shows the DNS records to add at your registrar, or adds them itself if the domain's DNS is already on Cloudflare. SSL is issued automatically. The site treats `https://www.lynzi.co.ke` as its main address.
 
@@ -44,7 +43,7 @@ The form posts to **Formspree** (free tier):
 
 1. Create a Formspree account using **hello@lynzi.co.ke** and add a new form.
 2. Copy the form ID, which is the part after `/f/` in the endpoint (for example `xyzabcde`).
-3. In `docs/contact.html`, paste it into `data-formspree=""` on the `<form>` tag, so it reads `data-formspree="xyzabcde"`.
+3. In `site/contact.html`, paste it into `data-formspree=""` on the `<form>` tag, so it reads `data-formspree="xyzabcde"`.
 4. Redeploy, then send yourself a test message. The first submission asks you to confirm the address.
 
 Until the ID is set, the Send button opens the visitor's email app with their message already addressed to hello@lynzi.co.ke, so no enquiry is lost in the meantime.
@@ -73,7 +72,7 @@ Until the ID is set, the Send button opens the visitor's email app with their me
 
 ## Imagery
 
-The photos come from [Unsplash](https://unsplash.com/license): free for commercial use, with no attribution required. They load from Unsplash's image CDN, which serves each visitor a size and format (WebP/AVIF) that fits their screen. Everything below the fold is lazy-loaded. To swap a photo, find its `photo-…` ID in the page HTML and replace it everywhere it appears. To self-host instead, download the sizes you need into `docs/assets/img/` and update the `src`/`srcset` URLs.
+The photos come from [Unsplash](https://unsplash.com/license): free for commercial use, with no attribution required. They load from Unsplash's image CDN, which serves each visitor a size and format (WebP/AVIF) that fits their screen. Everything below the fold is lazy-loaded. To swap a photo, find its `photo-…` ID in the page HTML and replace it everywhere it appears. To self-host instead, download the sizes you need into `site/assets/img/` and update the `src`/`srcset` URLs.
 
 | Where                        | Photographer               | Unsplash                                               |
 | ---------------------------- | -------------------------- | ------------------------------------------------------ |
